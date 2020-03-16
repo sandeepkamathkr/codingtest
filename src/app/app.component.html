@@ -7,9 +7,20 @@
           Please select a user to find their comments:
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="isLoading">
         <div class="col-12">
-
+          <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4" *ngIf="!isLoading">
+        <div class="col-12">
+          <ul class="list-inline" *ngIf="users && users.length != 0">
+            <li class="list-inline-item" *ngFor="let user of users">
+              <button type="button" class="btn btn-primary">{{user.name}}</button>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
