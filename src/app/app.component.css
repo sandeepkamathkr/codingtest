@@ -1,0 +1,10 @@
+.btn-mybutton {
+  color: white;
+  background-color: #005cbf;
+  border-color: #cccccc;
+}
+
+.btn-mybutton a:active{
+  background-color: orange;
+  color: black;
+}
