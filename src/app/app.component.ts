@@ -7,6 +7,8 @@ import {PostsService} from "./config/posts.service";
 import {CommentsService} from "./config/comments.service";
 import {Post} from "./shared/model/post.model";
 import {Comment} from "./shared/model/comment.model";
+import {orderBy} from 'lodash';
+import {payeeList} from "./shared/payeeList";
 
 @Component({
   selector: 'app-root',
@@ -47,6 +49,24 @@ export class AppComponent implements OnInit, OnDestroy {
           }
         });
       }));
+    console.log(payeeList);
+    console.log('sort by lodash.......');
+    const newPayeeList = orderBy(payeeList, [payee => payee.primary.isPrimary,
+      payee => payee.payeeType === 'BPAY',
+      payee => payee.payeeType === 'LINKED',
+      payee => payee.payeeType === 'PAY_ANYONE',
+      payee => payee.name], ['desc', 'asc', 'asc', 'asc', 'desc']);
+    console.log(newPayeeList);
+    console.log('sort by Vanilla Javascript.......');
+    const newVanillaList = payeeList.sort(function (a) {
+      return a.primary.isPrimary ? -1 : 1;
+    }).slice(0, 1);
+    const secondVanillaList = payeeList.slice(1, payeeList.length).sort(function (a, b) {
+      return a.payeeType == 'PAY_ANYONE' && b.payeeType != 'PAY_ANYONE' ? -1 : 1;
+    }).sort(function (a, b) {
+      return a.payeeType != 'PAY_ANYONE' && b.payeeType == 'BPAY' ? -1 : 1;
+    });
+    console.log(newVanillaList.concat(secondVanillaList));
   }
 
   fetchPosts(user: User): void {
