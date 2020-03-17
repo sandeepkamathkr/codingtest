@@ -39,11 +39,48 @@
           </div>
           <div class="row">
             <div class="col-12">
-              <ul class="list-group">
-                <li class="list-group-item" *ngFor="let post of dispalyedPosts">
-                  {{post.id}}
-                </li>
-              </ul>
+              <div class="accordion" id="accordionExample">
+                <div class="card" *ngFor="let post of dispalyedPosts">
+                  <div class="card-header" [id]="'heading'+post.id">
+                    <div class="row">
+                      <div class="col-8">
+                        <div class="row">
+                          <div class="col-12">
+                            <span>Title: </span> {{post.title}}
+                          </div>
+                          <div class="col-12">
+                            <span>body: </span>{{post.body}}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                [attr.data-target]="'#collapse'+post.id" aria-expanded="true"
+                                [attr.aria-controls]="'collapse'+post.id" (click)="loadAllComment(post)">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div [id]="'collapse'+post.id" class="collapse show" [attr.aria-labelledby]="'heading'+post.id"
+                       data-parent="#accordionExample">
+                    <div class="card-body" *ngIf="selectedPost && selectedPost.id == post.id">
+                      <div class="col-12" *ngIf="isCommentLoading">
+                        <div class="spinner-border" role="status">
+                          <span class="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <ul class="list-group" *ngIf="comments && comments.length != 0">
+                          <li class="list-group-item" *ngFor="let comment of comments">
+                            {{comment.body}}
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row mt-6" *ngIf="dispalyedPosts.length != actualPosts.length">

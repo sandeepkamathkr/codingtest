@@ -6,19 +6,23 @@ import {finalize} from "rxjs/operators";
 import {PostsService} from "./config/posts.service";
 import {CommentsService} from "./config/comments.service";
 import {Post} from "./shared/model/post.model";
+import {Comment} from "./shared/model/comment.model";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit,OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   isLoading = false;
   isPostLoading = false;
+  isCommentLoading = false;
   users: User[];
   selectedUser: User;
   actualPosts: Post[];
   dispalyedPosts: Post[];
+  selectedPost: Post;
+  comments: Comment[];
   private sub$: Subscription = new Subscription();
 
   constructor(
@@ -35,30 +39,40 @@ export class AppComponent implements OnInit,OnDestroy {
       .subscribe(result => {
         this.users = result;
         this.users.forEach(user => {
-          const name:string[] =  user.name.split(" ");
-          if(name.length ==3){//when the name contains more than three words
+          const name: string[] = user.name.split(" ");
+          if (name.length == 3) {//when the name contains more than three words
             user.fistName = name[1];
-          }else{
+          } else {
             user.fistName = name[0];
           }
         });
       }));
   }
 
-  fetchPosts(user: User): void{
+  fetchPosts(user: User): void {
     this.selectedUser = user;
     this.isPostLoading = true;
     this.sub$.add(this.postsService.findAllPostsByUser(user.id)
       .pipe(finalize(() => (this.isPostLoading = false)))
       .subscribe(result => {
         this.actualPosts = result;
-        this.dispalyedPosts = this.actualPosts.slice(0,3);
+        this.dispalyedPosts = this.actualPosts.slice(0, 3);
       })
     )
   }
 
-  loadAllPost(): void{
+  loadAllPost(): void {
     this.dispalyedPosts = this.actualPosts;
+  }
+
+  loadAllComment(post: Post): void {
+    this.selectedPost = post;
+    this.isCommentLoading = true;
+    this.comments = null;
+    this.sub$.add(this.commentsService.findAllCommentsByPost(post.id)
+      .pipe(finalize(() => (this.isCommentLoading = false)))
+      .subscribe(result => this.comments = result)
+    )
   }
 
   ngOnDestroy(): void {
