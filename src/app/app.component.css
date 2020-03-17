@@ -4,7 +4,12 @@
   border-color: #cccccc;
 }
 
-.btn-mybutton a:active{
+.name:focus{
   background-color: orange;
   color: black;
+}
+
+.post {
+  font-size: large;
+  font-weight: bold;
 }

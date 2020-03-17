@@ -18,7 +18,7 @@
         <div class="col-12">
           <ul class="list-inline" *ngIf="users && users.length != 0">
             <li class="list-inline-item" *ngFor="let user of users">
-              <a href="#" class="btn btn-mybutton" role="button" (click)="fetchPosts(user)">{{user.fistName}}</a>
+              <button class="btn btn-mybutton name" role="button" (click)="fetchPosts(user)">{{user.fistName}}</button>
             </li>
           </ul>
         </div>
@@ -32,9 +32,9 @@
       </div>
       <div class="row mt-4" *ngIf="!isPostLoading && dispalyedPosts && dispalyedPosts.length > 0">
         <div class="col-12">
-          <div class="row">
+          <div class="row mb-4">
             <div class="col-12">
-              The comments of {{selectedUser.name}}
+              <span class="post">Posts from  {{selectedUser.name}} :</span>
             </div>
           </div>
           <div class="row">
@@ -53,11 +53,11 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-4">
+                      <div class="col-4 text-right">
                         <button class="btn btn-link" type="button" data-toggle="collapse"
                                 [attr.data-target]="'#collapse'+post.id" aria-expanded="true"
                                 [attr.aria-controls]="'collapse'+post.id" (click)="loadAllComment(post)">
-                          <i class="fa fa-plus"></i>
+                          <i class="fa fa-plus fa-3x"></i>
                         </button>
                       </div>
                     </div>
@@ -83,9 +83,10 @@
               </div>
             </div>
           </div>
-          <div class="row mt-6" *ngIf="dispalyedPosts.length != actualPosts.length">
-            <div class="col-4">
-              <a href="#" class="btn btn-mybutton" role="button" (click)="loadAllPost()">Load All ...</a>
+          <div class="row pt-4" *ngIf="dispalyedPosts.length != actualPosts.length">
+            <div class="col-10"></div>
+            <div class="col-2">
+              <a href="#" class="btn btn-mybutton" role="button" (click)="loadAllPost()">... Load All</a>
             </div>
           </div>
         </div>
